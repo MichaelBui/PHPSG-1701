@@ -1,0 +1,10 @@
+version: '2'
+services:
+  app:
+    image: php:7.1.0-alpine
+    volumes:
+      - .:/var/www
+    ports:
+      - 8000:8000
+    working_dir: /var/www
+    command: bin/console server:run 0.0.0.0:8000
