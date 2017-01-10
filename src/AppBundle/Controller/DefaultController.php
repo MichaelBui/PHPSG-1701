@@ -38,23 +38,17 @@ class DefaultController extends Controller
      *
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @throws \HttpInvalidParamException
      */
     public function uploadAction(Request $request)
     {
-        /** @var FooService $foo */
-        $foo = $this->get('foo_service');
-        /** @var LogService $log */
-        $log = $this->get('log_service');
-
         $entity = new Entity();
         $form = $this->createForm(FormType::class, $entity);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $log->logSubmitted($entity->getName());
-            $foo->process();
-            $log->logProcessed($entity->getName());
+            return $this->redirect($this->generateUrl('homepage'));
         }
 
-        return $this->redirect($this->generateUrl('homepage'));
+        throw new \HttpInvalidParamException();
     }
 }

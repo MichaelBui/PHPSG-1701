@@ -10,7 +10,24 @@ services:
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
   foo_service:
     class: AppBundle\Service\FooService
+    arguments: ["@event_dispatcher"]
 
   log_service:
     class: AppBundle\Service\LogService
     arguments: ["%log_file%"]
+
+  foo_subscriber:
+    class: AppBundle\EventSubscriber\FooSubscriber
+    arguments: ["@foo_service"]
+
+  log_subscriber:
+    class: AppBundle\EventSubscriber\LogSubscriber
+    arguments: ["@log_service"]
+    tags:
+      - { name: kernel.event_subscriber }
+
+  form_type:
+    class: AppBundle\Form\FormType
+    arguments: ["@foo_subscriber", "@log_subscriber"]
+    tags:
+      - { name: form.type }
