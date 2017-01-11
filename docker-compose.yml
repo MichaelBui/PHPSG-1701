@@ -1,47 +1,33 @@
 version: '2'
 services:
   main:
-    image: gigary/php:7.0.14-armhf
+    image: phpsg/main
     links:
       - redis
-    volumes:
-      - ./main:/var/www
     ports:
       - 8000:8000
 
   redis:
-    image: gigary/redis:3.2.5-armhf
+    image: phpsg/redis
     ports:
       - 6379:6379
 
   log_watcher:
-    image: registry.gitlab.com/gigary/docker-base:3.5-armhf
+    image: phpsg/log-watcher
     links:
       - redis
-    volumes:
-      - ./log-watcher/service:/usr/bin/service
-    command: /usr/bin/service
 
   log_worker:
-    image: registry.gitlab.com/gigary/docker-base:3.5-armhf
+    image: phpsg/log-worker
     links:
       - redis
-    volumes:
-      - ./log-worker/service:/usr/bin/service
-    command: /usr/bin/service
 
   foo_watcher:
-    image: registry.gitlab.com/gigary/docker-base:3.5-armhf
+    image: phpsg/foo-watcher
     links:
       - redis
-    volumes:
-      - ./foo-watcher/service:/usr/bin/service
-    command: /usr/bin/service
 
   foo_worker:
-    image: registry.gitlab.com/gigary/docker-base:3.5-armhf
+    image: phpsg/foo-worker
     links:
       - redis
-    volumes:
-      - ./foo-worker/service:/usr/bin/service
-    command: /usr/bin/service
